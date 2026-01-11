@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CF-Space</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- markdown parser -->
+  <script src="marked.min.js"></script>
+
+  <style>
+    body {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 16px;
+      color: #eee;
+      background: #0b0f14;
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      border-bottom: 1px solid #333;
+      padding-bottom: 4px;
+    }
+
+    a {
+      color: #9cf;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    pre, code {
+      background: #111;
+      padding: 4px 8px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+
+    pre {
+      padding: 12px;
+    }
+
+    #nav {
+      margin-bottom: 24px;
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+
+    #nav a {
+      margin-right: 12px;
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 0.8em;
+      opacity: 0.5;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- bro stop inspecting, the whole repo is literally public -->
+
+<div id="nav">
+  <a href="?p=index">home</a>
+  <a href="?p=about">about</a>
+</div>
+
+<div id="content">Loading…</div>
+
+<footer>
+  CF-Space · markdown-powered · zero frontend skills
+</footer>
+
+<script>
+  // basic hardening
+  marked.setOptions({
+    mangle: false,
+    headerIds: false
+  });
+
+  const params = new URLSearchParams(location.search);
+  const post = params.get("p") || "index";
+  const path = `posts/${post}.md`;
+
+  fetch(path)
+    .then(res => {
+      if (!res.ok) throw new Error("not found");
+      return res.text();
+    })
+    .then(md => {
+      document.getElementById("content").innerHTML = marked.parse(md);
+
+      // set title from first heading if exists
+      const h1 = document.querySelector("#content h1");
+      if (h1) {
+        document.title = h1.innerText + " · CF-Space";
+      }
+    })
+    .catch(() => {
+      document.getElementById("content").innerHTML = `
+        <h1>404</h1>
+        <p>we don't have any things here</p>
+        <p><a href="?p=index">back to main padge-</a></p>
+      `;
+      document.title = "404 · CF-Space";
+    });
+</script>
+
+<!-- Why we're making this? ahhh we don't know wtf is html so we use md -->
+
+</body>
+</html>
