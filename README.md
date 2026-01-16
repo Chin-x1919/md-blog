@@ -3,6 +3,8 @@
 ![WTFPL License](https://img.shields.io/badge/license-WTFPL-green) 
 ![Open Source Garbage](https://img.shields.io/badge/open--source-garbage-red)
 
+Demo : [here](https://chin-x1919.github.io/Chin-x1919/)
+
 ---
 
 ## What ts even about
